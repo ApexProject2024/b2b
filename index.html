@@ -19,6 +19,7 @@
             --danger: #EF4444;
             --danger-light: #FEE2E2;
             --warning: #F59E0B;
+            --teal-accent: #27B4C4;
         }
 
         body {
@@ -32,7 +33,7 @@
         }
 
         /* =========================================
-           PANEL IZQUIERDO: LOGIN (Basado en la imagen)
+           PANEL IZQUIERDO: LOGIN
            ========================================= */
         .login-side {
             width: 450px;
@@ -183,9 +184,6 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .login-divider:not(:empty)::before { margin-right: 15px; }
-        .login-divider:not(:empty)::after { margin-left: 15px; }
-
         .social-login {
             display: flex;
             gap: 15px;
@@ -236,9 +234,8 @@
         }
 
         /* =========================================
-           PANEL DERECHO: INVENTARIO (Tu código)
+           PANEL DERECHO: INVENTARIO
            ========================================= */
-        /* Sidebar Íconos */
         .sidebar {
             width: 70px;
             background-color: var(--bg-card);
@@ -278,7 +275,6 @@
             border-radius: 8px;
         }
 
-        /* Panel Izquierdo (Métricas del CRM) */
         .left-panel {
             width: 300px;
             padding: 30px;
@@ -390,7 +386,6 @@
             border-top: 2px solid var(--danger);
         }
 
-        /* Panel Principal (Tabla) */
         .main-panel {
             flex: 1;
             padding: 30px;
@@ -437,7 +432,6 @@
             gap: 8px;
         }
 
-        /* Tabla */
         .table-container {
             background: var(--bg-card);
             border-radius: 12px;
@@ -527,7 +521,6 @@
             background-color: #059669;
         }
 
-        /* Detalle del Ítem Activo */
         .active-item-detail {
             border: 1px solid var(--primary);
             border-radius: 12px;
@@ -582,13 +575,48 @@
             font-weight: 500;
             color: var(--text-dark);
         }
+
+        /* =========================================
+           VENTANA FLOTANTE (MODAL CONGELADO)
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(27, 92, 101, 0.7); 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            width: 380px;
+            padding: 40px 30px;
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            text-align: center;
+            border-top: 4px solid var(--teal-accent);
+        }
+
+        .modal-content h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================
-         MÓDULO NUEVO: LOGIN BÚHO ELECTRONICS
-         ========================================== -->
+    <!-- Módulo Login -->
     <div class="login-side">
         <div class="login-header">
             <div class="login-header-icon">❁</div>
@@ -647,9 +675,6 @@
         </div>
     </div>
 
-    <!-- ==========================================
-         MÓDULO EXISTENTE: INVENTARIO BROOKLYN
-         ========================================== -->
     <!-- Sidebar de Iconos -->
     <div class="sidebar">
         <div class="logo-icon">B</div>
@@ -790,5 +815,16 @@
             </div>
         </div>
     </div>
+
+    <!-- ==========================================
+         VENTANA FLOTANTE (MODAL CONGELADO)
+         ========================================== -->
+    <div class="modal-overlay" id="preparacionModal">
+        <div class="modal-content">
+            <!-- Botón de cerrar eliminado -->
+            <h3>Pronto sabrás lo que<br>estamos preparando</h3>
+        </div>
+    </div>
+
 </body>
 </html>
