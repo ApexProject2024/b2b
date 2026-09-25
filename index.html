@@ -1,1 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Inventario | Brooklyn CRM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --text-dark: #111827;
+            --text-gray: #6B7280;
+            --bg-body: #FAFAFA;
+            --bg-card: #FFFFFF;
+            --border: #E5E7EB;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            --warning: #F59E0B;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+
+        /* =========================================
+           PANEL IZQUIERDO: LOGIN (Basado en la imagen)
+           ========================================= */
+        .login-side {
+            width: 450px;
+            min-width: 400px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px;
+            box-sizing: border-box;
+            z-index: 20;
+            overflow-y: auto;
+        }
+
+        .login-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        .login-header-icon {
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .login-main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .login-titles {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-titles h2 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .login-titles p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .login-input:focus {
+            border-color: var(--primary);
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 14px;
+            color: var(--text-gray);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .login-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-gray);
+            cursor: pointer;
+        }
+
+        .login-options a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .btn-login {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-login:hover {
+            opacity: 0.9;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-gray);
+            font-size: 12px;
+        }
+
+        .login-divider::before, .login-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .login-divider:not(:empty)::before { margin-right: 15px; }
+        .login-divider:not(:empty)::after { margin-left: 15px; }
+
+        .social-login {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-social {
+            flex: 1;
+            background: white;
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dark);
+        }
+
+        .btn-social:hover { background: var(--bg-body); }
+
+        .register-link {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-top: 10px;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+        
+        .login-footer a {
+            color: var(--text-gray);
+            text-decoration: none;
+        }
+
+        /* =========================================
+           PANEL DERECHO: INVENTARIO (Tu código)
+           ========================================= */
+        /* Sidebar Íconos */
+        .sidebar {
+            width: 70px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--text-gray);
+            cursor: pointer;
+        }
+
+        .nav-icon.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        /* Panel Izquierdo (Métricas del CRM) */
+        .left-panel {
+            width: 300px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            border-right: 1px solid var(--border);
+            background-color: var(--bg-body);
+            overflow-y: auto;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            margin: 0 0 8px 0;
+        }
+
+        .header-title p {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin: 0;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 15px;
+            gap: 10px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-box h3 {
+            font-size: 13px;
+            color: var(--text-dark);
+            margin: 0 0 10px 0;
+        }
+
+        .stat-box .value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .stat-box .value.red { color: var(--danger); }
+        .stat-box .value.blue { color: var(--primary); }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid var(--border);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chart-header h4 {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-gray);
+        }
+
+        .chart-value {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .badge.blue { background: var(--primary-light); color: var(--primary); }
+        .badge.red { background: var(--danger-light); color: var(--danger); }
+
+        .chart-placeholder {
+            height: 60px;
+            width: 100%;
+            background: linear-gradient(180deg, rgba(79,70,229,0.1) 0%, rgba(255,255,255,0) 100%);
+            border-top: 2px solid var(--primary);
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .chart-placeholder.red-chart {
+            background: linear-gradient(180deg, rgba(239,68,68,0.1) 0%, rgba(255,255,255,0) 100%);
+            border-top: 2px solid var(--danger);
+        }
+
+        /* Panel Principal (Tabla) */
+        .main-panel {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .top-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Tabla */
+        .table-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        th {
+            text-align: left;
+            font-size: 12px;
+            color: var(--text-gray);
+            font-weight: 500;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 15px 10px;
+            font-size: 13px;
+            vertical-align: middle;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td:first-child { border-left: 1px solid var(--border); border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+        td:last-child { border-right: 1px solid var(--border); border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+        tr.active td {
+            border-color: var(--primary);
+            background: #FAFAFF;
+        }
+
+        tr.out-of-stock td {
+            background: #FAFAFA;
+            color: var(--text-gray);
+        }
+
+        .item-img {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-body);
+            border-radius: 6px;
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 40px;
+            font-size: 18px;
+        }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .status-agotado {
+            color: var(--danger);
+            font-weight: 600;
+            background: var(--danger-light);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .btn-reponer {
+            background-color: #10B981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-reponer:hover {
+            background-color: #059669;
+        }
+
+        /* Detalle del Ítem Activo */
+        .active-item-detail {
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: var(--bg-card);
+        }
+
+        .active-item-gallery {
+            width: 150px;
+            height: 100px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
+
+        .gallery-nav {
+            width: 24px;
+            height: 24px;
+            background: #4B5563;
+            color: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .detail-info {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-block h5 {
+            margin: 0 0 5px 0;
+            font-size: 12px;
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+
+        .detail-block p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         MÓDULO NUEVO: LOGIN BÚHO ELECTRONICS
+         ========================================== -->
+    <div class="login-side">
+        <div class="login-header">
+            <div class="login-header-icon">❁</div>
+            <span>Brooklyn</span>
+        </div>
+
+        <div class="login-main">
+            <div class="login-titles">
+                <h2>Bienvenido de nuevo</h2>
+                <p>Ingresa tu correo electrónico y contraseña para acceder a tu cuenta.</p>
+            </div>
+
+            <form style="display: flex; flex-direction: column; gap: 18px;">
+                <div class="form-group">
+                    <label>Correo electrónico</label>
+                    <div class="form-input-wrapper">
+                        <input type="email" class="login-input" placeholder="usuario@buhoelectronics.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="form-input-wrapper">
+                        <input type="password" class="login-input" placeholder="••••••••" value="password123">
+                        <span class="eye-icon">⊘</span>
+                    </div>
+                </div>
+
+                <div class="login-options">
+                    <label><input type="checkbox"> Recordarme</label>
+                    <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="button" class="btn-login">Iniciar Sesión</button>
+            </form>
+
+            <div class="login-divider"><span>O iniciar sesión con</span></div>
+
+            <div class="social-login">
+                <button class="btn-social">
+                    <span style="color: #DB4437; font-weight: bold;">G</span> Google
+                </button>
+                <button class="btn-social">
+                    <span style="font-weight: bold;"></span> Apple
+                </button>
+            </div>
+
+            <div class="register-link">
+                ¿No tienes una cuenta? <a href="#">Regístrate ahora.</a>
+            </div>
+        </div>
+
+        <div class="login-footer">
+            <span>Copyright © 2026 Búho Electronics.</span>
+            <a href="#">Política de Privacidad</a>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MÓDULO EXISTENTE: INVENTARIO BROOKLYN
+         ========================================== -->
+    <!-- Sidebar de Iconos -->
+    <div class="sidebar">
+        <div class="logo-icon">B</div>
+        <div class="nav-icon">📊</div>
+        <div class="nav-icon active">📦</div>
+        <div class="nav-icon">📉</div>
+        <div class="nav-icon">💬</div>
+        <div class="nav-icon">⚙️</div>
+    </div>
+
+    <!-- Panel Izquierdo: Métricas -->
+    <div class="left-panel">
+        <div class="header-title">
+            <h1>Buscar Artículos</h1>
+            <p>Escribe el ID o nombre del artículo</p>
+        </div>
+
+        <div class="search-box">
+            <span>🔍</span>
+            <input type="text" placeholder="Buscar artículo aquí...">
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h3>Comprados</h3>
+                <div class="value red">32.860 <span style="font-size: 12px; color: var(--text-gray); font-weight: normal;">Unid</span></div>
+            </div>
+            <div class="stat-box">
+                <h3>Disponibles</h3>
+                <div class="value blue">23.328 <span style="font-size: 12px; color: var(--text-gray); font-weight: normal;">Unid</span></div>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h4>Ingresos de Productos</h4>
+                <select style="border:none; color: var(--text-gray); outline:none; background:transparent;"><option>Anual</option></select>
+            </div>
+            <div class="chart-value blue">
+                $1286 <span class="badge blue">12% ▴</span>
+            </div>
+            <div class="chart-placeholder"></div>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h4>Gastos de Productos</h4>
+                <select style="border:none; color: var(--text-gray); outline:none; background:transparent;"><option>Anual</option></select>
+            </div>
+            <div class="chart-value red">
+                $1032 <span class="badge red">10% ▴</span>
+            </div>
+            <div class="chart-placeholder red-chart"></div>
+        </div>
+    </div>
+
+    <!-- Panel Principal: Filtros y Tabla -->
+    <div class="main-panel">
+        <div class="top-filters">
+            <div class="filter-group">
+                <select class="filter-select"><option>Categoría : Accesorios</option></select>
+                <select class="filter-select"><option>Marca : Apple</option></select>
+                <select class="filter-select"><option>Ordenar por : Más Vendidos</option></select>
+            </div>
+            <div class="filter-group">
+                <button class="btn-primary">Añadir Nuevo +</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th style="width: 60px;"></th>
+                        <th>Número ID</th>
+                        <th>Nombre del Producto</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td><div class="item-img">📱</div></td>
+                        <td>IPH15P256</td>
+                        <td>iPhone 15 Pro</td>
+                        <td>$999</td>
+                        <td>120 unid</td>
+                        <td></td>
+                    </tr>
+                    
+                    <!-- Ítem Agotado con Botón de Reposición -->
+                    <tr class="out-of-stock active">
+                        <td><input type="checkbox" checked></td>
+                        <td><div class="item-img" style="background: var(--danger-light); color: var(--danger);">🔌</div></td>
+                        <td>APPCHG25W</td>
+                        <td style="font-weight: 500;">Cargador Apple iPhone 14 Pro Max 25W</td>
+                        <td>$25.00</td>
+                        <td><span class="status-agotado">Agotado</span></td>
+                        <td><button class="btn-reponer">Reponer ítem</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Detalle de ítem seleccionado -->
+        <div class="active-item-detail">
+            <div style="display: flex; gap: 15px; align-items: center; border-right: 1px solid var(--border); padding-right: 20px;">
+                <input type="checkbox" checked>
+                <div class="item-img" style="background: var(--danger-light); font-size: 24px;">🔌</div>
+                <div>
+                    <div style="font-size: 13px; color: var(--text-gray);">APPCHG25W</div>
+                    <div style="font-weight: 500; font-size: 14px;">Cargador Apple iPhone 14 Pro Max 25W</div>
+                </div>
+            </div>
+
+            <div class="active-item-gallery">
+                <div class="gallery-nav">❮</div>
+                <div style="font-size: 24px;">🔌</div>
+                <div class="gallery-nav">❯</div>
+            </div>
+
+            <div class="detail-info">
+                <div class="detail-block">
+                    <h5>Estado</h5>
+                    <p><span class="status-agotado">Agotado (0 unidades)</span></p>
+                </div>
+                <div class="detail-block">
+                    <h5>Precio Mayorista</h5>
+                    <p>$18.50</p>
+                </div>
+                <div class="detail-block">
+                    <h5>Acción Rápida</h5>
+                    <button class="btn-reponer" style="padding: 8px 16px; font-size: 13px;">Generar Reposición</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
